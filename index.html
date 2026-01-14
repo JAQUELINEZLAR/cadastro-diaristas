@@ -1,72 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cadastro de Diaristas</title>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #f2f4f7;
+  padding: 15px;
+}
+
+form {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 420px;
+  margin: auto;
+}
+
+h2, p {
+  text-align: center;
+}
+
+input, button {
+  width: 100%;
+  padding: 14px;
+  margin-top: 10px;
+  font-size: 16px;
+}
+
+input {
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+button {
+  background-color: #2e7d32;
+  color: white;
+  border: none;
+  border-radius: 8px;
+}
+</style>
+</head>
+
+<body>
+
+<form id="formulario">
+  <h2>Cadastro de Diarista</h2>
+  <p>Preencha os dados abaixo</p>
+
+  <input id="nome" placeholder="Nome completo" required>
+  <input id="cpf" placeholder="CPF (somente números)" inputmode="numeric" required>
+  <input id="telefone" placeholder="Telefone / WhatsApp">
+  <input id="email" placeholder="E-mail">
+
+  <input id="cep" placeholder="CEP" inputmode="numeric" required>
+
+  <input id="rua" placeholder="Rua" readonly>
+  <input id="bairro" placeholder="Bairro" readonly>
+  <input id="cidade" placeholder="Cidade" readonly>
+  <input id="estado" placeholder="Estado" readonly>
+
+  <button type="submit">Enviar cadastro</button>
+</form>
+
 <script>
-// PEGAR OS CAMPOS
-const formulario = document.getElementById("formulario");
 const cep = document.getElementById("cep");
 const rua = document.getElementById("rua");
 const bairro = document.getElementById("bairro");
 const cidade = document.getElementById("cidade");
 const estado = document.getElementById("estado");
 const cpf = document.getElementById("cpf");
+const formulario = document.getElementById("formulario");
 
-// BUSCAR ENDEREÇO PELO CEP (ViaCEP)
 cep.addEventListener("blur", () => {
-  const cepLimpo = cep.value.replace(/\D/g, "");
+  const c = cep.value.replace(/\D/g, "");
+  if (c.length !== 8) return;
 
-  if (cepLimpo.length !== 8) {
-    alert("CEP inválido");
-    return;
-  }
-
-  fetch(`https://viacep.com.br/ws/${cepLimpo}/json/`)
-    .then(resposta => resposta.json())
-    .then(dados => {
-      if (dados.erro) {
-        alert("CEP não encontrado");
-        return;
-      }
-
-      rua.value = dados.logradouro;
-      bairro.value = dados.bairro;
-      cidade.value = dados.localidade;
-      estado.value = dados.uf;
+  fetch(`https://viacep.com.br/ws/${c}/json/`)
+    .then(r => r.json())
+    .then(d => {
+      if (d.erro) return;
+      rua.value = d.logradouro;
+      bairro.value = d.bairro;
+      cidade.value = d.localidade;
+      estado.value = d.uf;
     });
 });
 
-// VALIDAR CPF
 function cpfValido(cpf) {
   cpf = cpf.replace(/\D/g, "");
   if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false;
-
-  let soma = 0;
-  let resto;
-
-  for (let i = 1; i <= 9; i++)
-    soma += parseInt(cpf.substring(i - 1, i)) * (11 - i);
-
-  resto = (soma * 10) % 11;
-  if (resto === 10 || resto === 11) resto = 0;
-  if (resto !== parseInt(cpf.substring(9, 10))) return false;
-
-  soma = 0;
-  for (let i = 1; i <= 10; i++)
-    soma += parseInt(cpf.substring(i - 1, i)) * (12 - i);
-
-  resto = (soma * 10) % 11;
-  if (resto === 10 || resto === 11) resto = 0;
-  if (resto !== parseInt(cpf.substring(10, 11))) return false;
-
-  return true;
+  let s = 0;
+  for (let i = 0; i < 9; i++) s += cpf[i] * (10 - i);
+  let r = (s * 10) % 11;
+  if (r === 10) r = 0;
+  if (r != cpf[9]) return false;
+  s = 0;
+  for (let i = 0; i < 10; i++) s += cpf[i] * (11 - i);
+  r = (s * 10) % 11;
+  if (r === 10) r = 0;
+  return r == cpf[10];
 }
 
-// ENVIO DO FORMULÁRIO
-formulario.addEventListener("submit", (e) => {
+formulario.addEventListener("submit", e => {
   e.preventDefault();
-
   if (!cpfValido(cpf.value)) {
     alert("CPF inválido");
     return;
   }
-
   alert("Cadastro enviado com sucesso!");
 });
 </script>
+
+</body>
+</html>
