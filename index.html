@@ -1,1 +1,72 @@
-COLE_AQUI_URL_DO_WEBAPP
+<script>
+// PEGAR OS CAMPOS
+const formulario = document.getElementById("formulario");
+const cep = document.getElementById("cep");
+const rua = document.getElementById("rua");
+const bairro = document.getElementById("bairro");
+const cidade = document.getElementById("cidade");
+const estado = document.getElementById("estado");
+const cpf = document.getElementById("cpf");
+
+// BUSCAR ENDEREÇO PELO CEP (ViaCEP)
+cep.addEventListener("blur", () => {
+  const cepLimpo = cep.value.replace(/\D/g, "");
+
+  if (cepLimpo.length !== 8) {
+    alert("CEP inválido");
+    return;
+  }
+
+  fetch(`https://viacep.com.br/ws/${cepLimpo}/json/`)
+    .then(resposta => resposta.json())
+    .then(dados => {
+      if (dados.erro) {
+        alert("CEP não encontrado");
+        return;
+      }
+
+      rua.value = dados.logradouro;
+      bairro.value = dados.bairro;
+      cidade.value = dados.localidade;
+      estado.value = dados.uf;
+    });
+});
+
+// VALIDAR CPF
+function cpfValido(cpf) {
+  cpf = cpf.replace(/\D/g, "");
+  if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false;
+
+  let soma = 0;
+  let resto;
+
+  for (let i = 1; i <= 9; i++)
+    soma += parseInt(cpf.substring(i - 1, i)) * (11 - i);
+
+  resto = (soma * 10) % 11;
+  if (resto === 10 || resto === 11) resto = 0;
+  if (resto !== parseInt(cpf.substring(9, 10))) return false;
+
+  soma = 0;
+  for (let i = 1; i <= 10; i++)
+    soma += parseInt(cpf.substring(i - 1, i)) * (12 - i);
+
+  resto = (soma * 10) % 11;
+  if (resto === 10 || resto === 11) resto = 0;
+  if (resto !== parseInt(cpf.substring(10, 11))) return false;
+
+  return true;
+}
+
+// ENVIO DO FORMULÁRIO
+formulario.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  if (!cpfValido(cpf.value)) {
+    alert("CPF inválido");
+    return;
+  }
+
+  alert("Cadastro enviado com sucesso!");
+});
+</script>
