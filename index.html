@@ -9,11 +9,11 @@
 body {
   font-family: Arial, sans-serif;
   background: #f2f4f7;
-  padding: 15px;
+  padding: 20px;
 }
 
 form {
-  background: #ffffff;
+  background: #fff;
   padding: 20px;
   border-radius: 10px;
   max-width: 420px;
@@ -32,12 +32,12 @@ input, button {
 }
 
 input {
-  border-radius: 8px;
   border: 1px solid #ccc;
+  border-radius: 8px;
 }
 
 button {
-  background-color: #2e7d32;
+  background: #2e7d32;
   color: white;
   border: none;
   border-radius: 8px;
@@ -49,14 +49,14 @@ button {
 
 <form id="formulario">
   <h2>Cadastro de Diarista</h2>
-  <p>Preencha os dados abaixo</p>
+  <p>Preencha seus dados</p>
 
   <input id="nome" placeholder="Nome completo" required>
-  <input id="cpf" placeholder="CPF (somente números)" inputmode="numeric" required>
+  <input id="cpf" placeholder="CPF (somente números)" required>
   <input id="telefone" placeholder="Telefone / WhatsApp">
   <input id="email" placeholder="E-mail">
 
-  <input id="cep" placeholder="CEP" inputmode="numeric" required>
+  <input id="cep" placeholder="CEP" required>
 
   <input id="rua" placeholder="Rua" readonly>
   <input id="bairro" placeholder="Bairro" readonly>
@@ -76,10 +76,10 @@ const cpf = document.getElementById("cpf");
 const formulario = document.getElementById("formulario");
 
 cep.addEventListener("blur", () => {
-  const c = cep.value.replace(/\D/g, "");
-  if (c.length !== 8) return;
+  const valor = cep.value.replace(/\D/g, "");
+  if (valor.length !== 8) return;
 
-  fetch(`https://viacep.com.br/ws/${c}/json/`)
+  fetch("https://viacep.com.br/ws/" + valor + "/json/")
     .then(r => r.json())
     .then(d => {
       if (d.erro) return;
@@ -90,19 +90,17 @@ cep.addEventListener("blur", () => {
     });
 });
 
-function cpfValido(cpf) {
-  cpf = cpf.replace(/\D/g, "");
-  if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false;
-  let s = 0;
-  for (let i = 0; i < 9; i++) s += cpf[i] * (10 - i);
-  let r = (s * 10) % 11;
-  if (r === 10) r = 0;
-  if (r != cpf[9]) return false;
+function cpfValido(c) {
+  c = c.replace(/\D/g, "");
+  if (c.length !== 11 || /^(\d)\1+$/.test(c)) return false;
+  let s = 0, r;
+  for (let i = 0; i < 9; i++) s += c[i] * (10 - i);
+  r = (s * 10) % 11; if (r == 10) r = 0;
+  if (r != c[9]) return false;
   s = 0;
-  for (let i = 0; i < 10; i++) s += cpf[i] * (11 - i);
-  r = (s * 10) % 11;
-  if (r === 10) r = 0;
-  return r == cpf[10];
+  for (let i = 0; i < 10; i++) s += c[i] * (11 - i);
+  r = (s * 10) % 11; if (r == 10) r = 0;
+  return r == c[10];
 }
 
 formulario.addEventListener("submit", e => {
@@ -117,3 +115,4 @@ formulario.addEventListener("submit", e => {
 
 </body>
 </html>
+                                                                                                                                                                                                                                      
