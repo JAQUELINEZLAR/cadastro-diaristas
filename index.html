@@ -1,130 +1,144 @@
 <!DOCTYPE html>
+<html lang="pt-br">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cadastro de Diaristas</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cadastro de Diaristas</title>
 
-<style>
-body {
-  font-family: Arial, sans-serif;
-  background: #f2f4f7;
-  padding: 20px;
-}
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f2f4f7;
+      padding: 20px;
+    }
 
-form {
-  background: #fff;
-  padding: 20px;
-  border-radius: 10px;
-  max-width: 420px;
-  margin: auto;
-}
+    form {
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 420px;
+      margin: auto;
+    }
 
-.logo-container {
-  text-align: center;
-}
+    .logo-container {
+      text-align: center;
+    }
 
-.logo-container img {
-  max-width: 150px;
-  margin-bottom: 10px;
-}
+    .logo-container img {
+      max-width: 150px;
+      margin-bottom: 10px;
+    }
 
-h2, p {
-  text-align: center;
-}
+    h2, p {
+      text-align: center;
+    }
 
-input, button {
-  width: 100%;
-  padding: 14px;
-  margin-top: 10px;
-  font-size: 16px;
-}
+    input, button {
+      width: 100%;
+      padding: 14px;
+      margin-top: 10px;
+      font-size: 16px;
+    }
 
-input {
-  border: 1px solid #ccc;
-  border-radius: 8px;
-}
+    input {
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
 
-button {
-  background: #2e7d32;
-  color: white;
-  border: none;
-  border-radius: 8px;
-}
-</style>
+    button {
+      background: #2e7d32;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+  </style>
 </head>
 
 <body>
 
-<form id="formulario">
+  <form id="formulario">
 
-  <div class="logo-container">
- <img src="logo.png" alt="Logo ZLAR">
-  </div>
+    <!-- LOGO -->
+    <div class="logo-container">
+      <img src="logo.png" alt="Logo ZLAR">
+    </div>
 
-  <h2>Cadastro de Diarista</h2>
-  <p>Preencha seus dados</p>
+    <h2>Cadastro de Diarista</h2>
+    <p>Preencha seus dados</p>
 
-  <input id="nome" placeholder="Nome completo" required>
-  <input id="cpf" placeholder="CPF (somente números)" required>
-  <input id="telefone" placeholder="Telefone / WhatsApp">
-  <input id="email" placeholder="E-mail">
+    <input id="nome" placeholder="Nome completo" required>
+    <input id="cpf" placeholder="CPF (somente números)" required>
+    <input id="telefone" placeholder="Telefone / WhatsApp">
+    <input id="email" placeholder="E-mail">
 
-  <input id="cep" placeholder="CEP" required>
+    <input id="cep" placeholder="CEP" required>
 
-  <input id="rua" placeholder="Rua" readonly>
-  <input id="bairro" placeholder="Bairro" readonly>
-  <input id="cidade" placeholder="Cidade" readonly>
-  <input id="estado" placeholder="Estado" readonly>
+    <input id="rua" placeholder="Rua" readonly>
+    <input id="bairro" placeholder="Bairro" readonly>
+    <input id="cidade" placeholder="Cidade" readonly>
+    <input id="estado" placeholder="Estado" readonly>
 
-  <button type="submit">Enviar cadastro</button>
-</form>
+    <button type="submit">Enviar cadastro</button>
+  </form>
 
-<script>
-const cep = document.getElementById("cep");
-const rua = document.getElementById("rua");
-const bairro = document.getElementById("bairro");
-const cidade = document.getElementById("cidade");
-const estado = document.getElementById("estado");
-const cpf = document.getElementById("cpf");
-const formulario = document.getElementById("formulario");
+  <script>
+    const cep = document.getElementById("cep");
+    const rua = document.getElementById("rua");
+    const bairro = document.getElementById("bairro");
+    const cidade = document.getElementById("cidade");
+    const estado = document.getElementById("estado");
+    const cpf = document.getElementById("cpf");
+    const formulario = document.getElementById("formulario");
 
-cep.addEventListener("blur", () => {
-  const valor = cep.value.replace(/\D/g, "");
-  if (valor.length !== 8) return;
+    cep.addEventListener("blur", () => {
+      const valor = cep.value.replace(/\D/g, "");
+      if (valor.length !== 8) return;
 
-  fetch("https://viacep.com.br/ws/" + valor + "/json/")
-    .then(r => r.json())
-    .then(d => {
-      if (d.erro) return;
-      rua.value = d.logradouro;
-      bairro.value = d.bairro;
-      cidade.value = d.localidade;
-      estado.value = d.uf;
+      fetch("https://viacep.com.br/ws/" + valor + "/json/")
+        .then(response => response.json())
+        .then(data => {
+          if (data.erro) return;
+          rua.value = data.logradouro;
+          bairro.value = data.bairro;
+          cidade.value = data.localidade;
+          estado.value = data.uf;
+        });
     });
-});
 
-function cpfValido(c) {
-  c = c.replace(/\D/g, "");
-  if (c.length !== 11 || /^(\d)\1+$/.test(c)) return false;
-  let s = 0, r;
-  for (let i = 0; i < 9; i++) s += c[i] * (10 - i);
-  r = (s * 10) % 11; if (r == 10) r = 0;
-  if (r != c[9]) return false;
-  s = 0;
-  for (let i = 0; i < 10; i++) s += c[i] * (11 - i);
-  r = (s * 10) % 11; if (r == 10) r = 0;
-  return r == c[10];
-}
+    function cpfValido(cpf) {
+      cpf = cpf.replace(/\D/g, "");
+      if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false;
 
-formulario.addEventListener("submit", e => {
-  e.preventDefault();
-  if (!cpfValido(cpf.value)) {
-    alert("CPF inválido");
-    return;
-  }
-  alert("Cadastro enviado com sucesso!");
-});
-</script>
+      let soma = 0;
+      for (let i = 0; i < 9; i++) soma += cpf[i] * (10 - i);
+      let resto = (soma * 10) % 11;
+      if (resto === 10) resto = 0;
+      if (resto != cpf[9]) return false;
+
+      soma = 0;
+      for (let i = 0; i < 10; i++) soma += cpf[i] * (11 - i);
+      resto = (soma * 10) % 11;
+      if (resto === 10) resto = 0;
+
+      return resto == cpf[10];
+    }
+
+    formulario.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      if (!cpfValido(cpf.value)) {
+        alert("CPF inválido");
+        return;
+      }
+
+      alert("Cadastro enviado com sucesso!");
+    });
+  </script>
 
 </body>
 </html>
