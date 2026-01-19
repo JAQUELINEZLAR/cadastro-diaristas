@@ -7,17 +7,21 @@
 
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #f2f4f7;
-      padding: 20px;
+  font-family: Arial, sans-serif;
+  background: #f4f6f8; /* fundo claro */
+  padding: 20px;
+}
+
     }
 
-    form {
-      background: #fff;
-      padding: 20px;
-      border-radius: 10px;
-      max-width: 420px;
-      margin: auto;
+  form {
+  background: #ffffff;
+  padding: 25px;
+  border-radius: 12px;
+  max-width: 420px;
+  margin: auto;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+}
     }
 
     .logo-container {
@@ -29,9 +33,15 @@
       margin-bottom: 10px;
     }
 
-    h2, p {
-      text-align: center;
-    }
+   h2 {
+  text-align: center;
+  color: #0b1d33; /* azul escuro */
+}
+
+    p {
+  text-align: center;
+  color: #555;
+}
 
     input, button {
       width: 100%;
@@ -45,16 +55,25 @@
       border-radius: 8px;
     }
 
-    button {
-      background: #2e7d32;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-    }
+   button {
+  background: #0b1d33;
+  color: #d4a857;
+  border: none;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
 
-    button:hover {
-      opacity: 0.9;
+button:hover {
+  background: #081526;
+}
+input:focus {
+  outline: none;
+  border-color: #0b1d33;
+  box-shadow: 0 0 0 2px rgba(11, 29, 51, 0.15);
+}
+
     }
   </style>
 </head>
