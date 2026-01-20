@@ -25,7 +25,7 @@ body {
 /* Card do formulário */
 form {
   background: #0b1d33;
-  padding: 8px 22px 20px; /* 🔽 topo mínimo */
+  padding: 4px 20px 20px; /* TOPO QUASE ZERO */
   border-radius: 18px;
   max-width: 420px;
   width: 100%;
@@ -34,19 +34,21 @@ form {
 .logo-container {
   display: flex;
   justify-content: center;
-  align-items: center;
-  margin: 0 0 6px 0; /* 🔽 quase colada */
+  margin: 0;
+  padding: 0;
 }
 
 .logo-container img {
-  width: 220px;      /* logo grande */
-  max-width: 75%;
+  width: 240px;  /* logo maior */
   height: auto;
+  margin: 0;
+  display: block;
+  .logo-container { line-height: 0; }
 }
 /* Títulos */
 h2 {
-  margin-top: 4px;   /* 🔽 antes era grande */
-  margin-bottom: 6px;
+  margin: 8px 0 6px 0;
+  padding: 0;
   text-align: center;
   color: #ffffff;
 }
