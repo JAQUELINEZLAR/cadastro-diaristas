@@ -18,42 +18,40 @@ body {
   justify-content: center;
   align-items: center;
   font-family: Arial, sans-serif;
-  background: #ffffff; /* página branca */
+  background: #ffffff;
   padding: 20px;
 }
 
-/* Card do formulário */
+/* Card */
 form {
   background: #0b1d33;
-  padding: 4px 10px 10px; /* TOPO QUASE ZERO */
+  padding: 4px 10px 10px;
   border-radius: 9px;
   max-width: 420px;
   width: 100%;
   box-shadow: 0 10px 20px rgba(0,0,0,0.25);
 }
+
 .logo-container {
   display: flex;
   justify-content: center;
   margin: 0;
-  padding:0;
+  padding: 0;
 }
 
 .logo-container img {
   width: 240px;
-  height: auto;
   margin-top: -25px;
-  display: block;
-  .logo-container { line-height: 0; }
 }
+
 /* Títulos */
 h2 {
-  margin-top: -122px;
-  padding: 0;
+  margin-top: -15px;
   text-align: center;
   color: #ffffff;
 }
+
 p {
-  margin-top: 0;
   margin-bottom: 12px;
   text-align: center;
   color: #cbd5e1;
@@ -67,13 +65,12 @@ input {
   font-size: 15px;
   border-radius: 10px;
   border: 1px solid #94a3b8;
-  background: #f1f5ff; /* azul claro */
+  background: #f1f5ff;
 }
 
 input:focus {
   outline: none;
   border-color: #d4a857;
-  background: #e8efff;
 }
 
 /* Botão */
@@ -94,7 +91,7 @@ button:hover {
   background: #c09847;
 }
 
-/* Mensagem sucesso */
+/* Mensagem */
 .success {
   display: none;
   margin-top: 15px;
@@ -106,7 +103,6 @@ button:hover {
   font-weight: bold;
 }
 
-/* Rodapé */
 .footer {
   text-align: center;
   margin-top: 20px;
@@ -151,14 +147,15 @@ button:hover {
 </form>
 
 <script>
+const form = document.getElementById("formulario");
+const successMsg = document.getElementById("successMsg");
+
 const cep = document.getElementById("cep");
 const rua = document.getElementById("rua");
 const bairro = document.getElementById("bairro");
 const cidade = document.getElementById("cidade");
 const estado = document.getElementById("estado");
 const cpf = document.getElementById("cpf");
-const form = document.getElementById("formulario");
-const successMsg = document.getElementById("successMsg");
 
 cep.addEventListener("blur", () => {
   const v = cep.value.replace(/\D/g, "");
@@ -192,7 +189,6 @@ function cpfValido(cpf) {
   return resto == cpf[10];
 }
 
-<script>
 form.addEventListener("submit", e => {
   e.preventDefault();
 
@@ -202,31 +198,32 @@ form.addEventListener("submit", e => {
   }
 
   const dados = {
-    nome: document.getElementById("nome").value,
-    cpf: document.getElementById("cpf").value,
-    telefone: document.getElementById("telefone").value,
-    email: document.getElementById("email").value,
-    cep: document.getElementById("cep").value,
-    rua: document.getElementById("rua").value,
-    bairro: document.getElementById("bairro").value,
-    cidade: document.getElementById("cidade").value,
-    estado: document.getElementById("estado").value,
-    dias: ""
+    nome: nome.value,
+    cpf: cpf.value,
+    telefone: telefone.value,
+    email: email.value,
+    cep: cep.value,
+    rua: rua.value,
+    bairro: bairro.value,
+    cidade: cidade.value,
+    estado: estado.value
   };
 
   fetch("https://script.google.com/macros/s/AKfycbwAOvCEJntTvKKRyzBXnCnjiy47xG95a4630qGqVgfyJ5x4yXrP6be-7tGF6A3kd_8uwQ/exec", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(dados)
   })
   .then(() => {
     successMsg.style.display = "block";
     form.reset();
   })
-  .catch(() => {
-    alert("Erro ao enviar. Tente novamente.");
+  .catch(err => {
+    alert("Erro ao enviar formulário");
+    console.error(err);
   });
 });
 </script>
+
+</body>
+</html>
