@@ -192,6 +192,7 @@ function cpfValido(cpf) {
   return resto == cpf[10];
 }
 
+<script>
 form.addEventListener("submit", e => {
   e.preventDefault();
 
@@ -200,10 +201,32 @@ form.addEventListener("submit", e => {
     return;
   }
 
-  successMsg.style.display = "block";
-  form.reset();
+  const dados = {
+    nome: document.getElementById("nome").value,
+    cpf: document.getElementById("cpf").value,
+    telefone: document.getElementById("telefone").value,
+    email: document.getElementById("email").value,
+    cep: document.getElementById("cep").value,
+    rua: document.getElementById("rua").value,
+    bairro: document.getElementById("bairro").value,
+    cidade: document.getElementById("cidade").value,
+    estado: document.getElementById("estado").value,
+    dias: ""
+  };
+
+  fetch("https://script.google.com/macros/s/AKfycbwAOvCEJntTvKKRyzBXnCnjiy47xG95a4630qGqVgfyJ5x4yXrP6be-7tGF6A3kd_8uwQ/exec", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(dados)
+  })
+  .then(() => {
+    successMsg.style.display = "block";
+    form.reset();
+  })
+  .catch(() => {
+    alert("Erro ao enviar. Tente novamente.");
+  });
 });
 </script>
-
-</body>
-</html>
