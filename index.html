@@ -7,20 +7,32 @@
 <title>Cadastro de Diaristas - Zlar</title>
 
 <style>
+* {
+  box-sizing: border-box;
+}
+
 body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   font-family: Arial, sans-serif;
-  background: #f2f4f7;
+  background: #0b1d33; /* azul escuro da logo */
   padding: 20px;
 }
 
+/* Card do formulário */
 form {
-  background: #fff;
-  padding: 22px;
-  border-radius: 12px;
+  background: #ffffff;
+  padding: 24px;
+  border-radius: 16px;
   max-width: 420px;
-  margin: auto;
+  width: 100%;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.35);
 }
 
+/* Logo */
 .logo-container {
   text-align: center;
 }
@@ -30,55 +42,72 @@ form {
   margin-bottom: 10px;
 }
 
+/* Títulos */
 h2 {
   text-align: center;
-  margin-bottom: 4px;
   color: #0b1d33;
+  margin-bottom: 4px;
 }
 
 p {
   text-align: center;
-  margin-bottom: 16px;
-  color: #555;
+  color: #6b7280;
+  margin-bottom: 18px;
 }
 
+/* Inputs */
 input {
   width: 100%;
   padding: 14px;
   margin-top: 10px;
   font-size: 15px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
+  border-radius: 10px;
+  border: 1px solid #c7d2e5;
+  background: #f0f5ff; /* azul claro harmônico */
 }
 
+input:focus {
+  outline: none;
+  border-color: #0b1d33;
+  background: #e8efff;
+}
+
+/* Botão */
 button {
   width: 100%;
-  padding: 14px;
-  margin-top: 16px;
+  padding: 15px;
+  margin-top: 18px;
   font-size: 16px;
   font-weight: bold;
   background: #d4a857;
   color: #0b1d33;
   border: none;
-  border-radius: 10px;
+  border-radius: 12px;
   cursor: pointer;
+  transition: 0.3s;
 }
 
+button:hover {
+  background: #c09847;
+}
+
+/* Mensagem de sucesso */
 .success {
   display: none;
   margin-top: 15px;
+  padding: 12px;
   background: #e6f7ee;
   color: #1e7a4b;
-  padding: 12px;
   text-align: center;
-  border-radius: 8px;
+  border-radius: 10px;
   font-weight: bold;
 }
 
+/* Rodapé */
 .footer {
   text-align: center;
   margin-top: 20px;
-  color: #777;
+  color: #9ca3af;
   font-size: 13px;
 }
 </style>
@@ -115,7 +144,6 @@ button {
   <div class="footer">
     Zlar – Cuidando do Seu Lar
   </div>
-
 </form>
 
 <script>
@@ -128,6 +156,7 @@ const cpf = document.getElementById("cpf");
 const form = document.getElementById("formulario");
 const successMsg = document.getElementById("successMsg");
 
+/* Busca CEP */
 cep.addEventListener("blur", () => {
   const v = cep.value.replace(/\D/g, "");
   if (v.length !== 8) return;
@@ -143,6 +172,37 @@ cep.addEventListener("blur", () => {
     });
 });
 
+/* Validação CPF */
 function cpfValido(cpf) {
   cpf = cpf.replace(/\D/g, "");
-  if (cpf.length !== 11 || /^(\d)\1+
+  if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false;
+
+  let soma = 0;
+  for (let i = 0; i < 9; i++) soma += cpf[i] * (10 - i);
+  let resto = (soma * 10) % 11;
+  if (resto === 10) resto = 0;
+  if (resto != cpf[9]) return false;
+
+  soma = 0;
+  for (let i = 0; i < 10; i++) soma += cpf[i] * (11 - i);
+  resto = (soma * 10) % 11;
+
+  return resto == cpf[10];
+}
+
+/* Envio */
+form.addEventListener("submit", e => {
+  e.preventDefault();
+
+  if (!cpfValido(cpf.value)) {
+    alert("CPF inválido");
+    return;
+  }
+
+  successMsg.style.display = "block";
+  form.reset();
+});
+</script>
+
+</body>
+</html>
