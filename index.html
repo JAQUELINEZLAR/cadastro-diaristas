@@ -28,4 +28,123 @@ form {
   width: 100%;
 }
 
-input, button
+input, button {
+  width: 100%;
+  padding: 14px;
+  margin-top: 10px;
+  border-radius: 10px;
+  border: none;
+}
+
+button {
+  background: #d4a857;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.success {
+  display: none;
+  margin-top: 10px;
+  background: #d1fae5;
+  color: #065f46;
+  padding: 10px;
+  text-align: center;
+  border-radius: 8px;
+}
+</style>
+</head>
+
+<body>
+
+<form id="formulario">
+  <input id="nome" placeholder="Nome completo" required>
+  <input id="cpf" placeholder="CPF" required>
+  <input id="telefone" placeholder="Telefone">
+  <input id="email" placeholder="Email">
+
+  <input id="cep" placeholder="CEP" required>
+  <input id="rua" placeholder="Rua" readonly>
+  <input id="bairro" placeholder="Bairro" readonly>
+  <input id="cidade" placeholder="Cidade" readonly>
+  <input id="estado" placeholder="Estado" readon>ly
+  
+<p style="color:#cbd5e1;margin-top:10px">Dias disponíveis:</p>
+<label><input type="checkbox" name="dias" value="Segunda"> Segunda</label><br>
+<label><input type="checkbox" name="dias" value="Terça"> Terça</label><br>
+<label><input type="checkbox" name="dias" value="Quarta"> Quarta</label><br>
+<label><input type="checkbox" name="dias" value="Quinta"> Quinta</label><br>
+<label><input type="checkbox" name="dias" value="Sexta"> Sexta</label><br>
+<label><input type="checkbox" name="dias" value="Sábado"> Sábado</label><br>
+<label><input type="checkbox" name="dias" value="Domingo"> Domingo</label>
+
+  
+
+  <button type="submit">Enviar</button>
+
+  <div class="success" id="successMsg">
+    Cadastro enviado com sucesso 💛
+  </div>
+</form>
+
+<script>
+const form = document.getElementById("formulario");
+const successMsg = document.getElementById("successMsg");
+const cpfInput = document.getElementById("cpf");
+
+function cpfValido(cpf) {
+  cpf = cpf.replace(/\D/g, "");
+  if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false;
+
+  let soma = 0;
+  for (let i = 0; i < 9; i++) soma += cpf[i] * (10 - i);
+  let resto = (soma * 10) % 11;
+  if (resto === 10) resto = 0;
+  if (resto != cpf[9]) return false;
+
+  soma = 0;
+  for (let i = 0; i < 10; i++) soma += cpf[i] * (11 - i);
+  resto = (soma * 10) % 11;
+
+  return resto == cpf[10];
+}
+
+form.addEventListener("submit", e => {
+  e.preventDefault();
+
+  if (!cpfValido(cpfInput.value)) {
+    alert("CPF inválido");
+    return;
+  }
+
+  const dados = {
+    nome: nome.value,
+    cpf: cpf.value,
+    telefone: telefone.value,
+    email: email.value,
+    cep: cep.value,
+    rua: rua.value,
+    bairro: bairro.value,
+    cidade: cidade.value,
+    estado: estado.value,
+    dias: ""
+  };
+
+  fetch("https://script.google.com/macros/s/AKfycbwAOvCEJntTvKKRyzBXnCnjiy47xG95a4630qGqVgfyJ5x4yXrP6be-7tGF6A3kd_8uwQ/exec", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(dados)
+  })
+  .then(res => res.text())
+  .then(() => {
+    successMsg.style.display = "block";
+    form.reset();
+  })
+  .catch(err => {
+    alert("Erro ao enviar formulário");
+    console.error(err);
+  });
+});
+</script>
+
+</body>
+</html>
