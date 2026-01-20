@@ -35,26 +35,24 @@ form {
 .logo-container {
   display: flex;
   justify-content: center;
-  margin: 0;
-  padding: 0;
 }
 
 .logo-container img {
   width: 240px;
-  margin-top: -25px;
+  margin-top: -20px;
 }
 
 /* Títulos */
 h2 {
-  margin-top: -15px;
   text-align: center;
   color: #ffffff;
+  margin-top: -122px;
 }
 
 p {
-  margin-bottom: 12px;
   text-align: center;
   color: #cbd5e1;
+  margin-bottom: 12px;
 }
 
 /* Inputs */
@@ -147,48 +145,57 @@ button:hover {
 </form>
 
 <script>
+// FORM
 const form = document.getElementById("formulario");
 const successMsg = document.getElementById("successMsg");
+
+// INPUTS
+const nome = document.getElementById("nome");
+const cpf = document.getElementById("cpf");
+const telefone = document.getElementById("telefone");
+const email = document.getElementById("email");
 
 const cep = document.getElementById("cep");
 const rua = document.getElementById("rua");
 const bairro = document.getElementById("bairro");
 const cidade = document.getElementById("cidade");
 const estado = document.getElementById("estado");
-const cpf = document.getElementById("cpf");
 
+// VIA CEP
 cep.addEventListener("blur", () => {
   const v = cep.value.replace(/\D/g, "");
   if (v.length !== 8) return;
 
-  fetch("https://viacep.com.br/ws/" + v + "/json/")
+  fetch(`https://viacep.com.br/ws/${v}/json/`)
     .then(r => r.json())
     .then(d => {
       if (d.erro) return;
-      rua.value = d.logradouro;
-      bairro.value = d.bairro;
-      cidade.value = d.localidade;
-      estado.value = d.uf;
+      rua.value = d.logradouro || "";
+      bairro.value = d.bairro || "";
+      cidade.value = d.localidade || "";
+      estado.value = d.uf || "";
     });
 });
 
-function cpfValido(cpf) {
-  cpf = cpf.replace(/\D/g, "");
-  if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false;
+// CPF
+function cpfValido(v) {
+  v = v.replace(/\D/g, "");
+  if (v.length !== 11 || /^(\d)\1+$/.test(v)) return false;
 
   let soma = 0;
-  for (let i = 0; i < 9; i++) soma += cpf[i] * (10 - i);
+  for (let i = 0; i < 9; i++) soma += v[i] * (10 - i);
   let resto = (soma * 10) % 11;
   if (resto === 10) resto = 0;
-  if (resto != cpf[9]) return false;
+  if (resto != v[9]) return false;
 
   soma = 0;
-  for (let i = 0; i < 10; i++) soma += cpf[i] * (11 - i);
+  for (let i = 0; i < 10; i++) soma += v[i] * (11 - i);
   resto = (soma * 10) % 11;
 
-  return resto == cpf[10];
+  return resto == v[10];
 }
 
+// SUBMIT
 form.addEventListener("submit", e => {
   e.preventDefault();
 
@@ -214,16 +221,18 @@ form.addEventListener("submit", e => {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(dados)
   })
+  .then(r => r.text())
   .then(() => {
     successMsg.style.display = "block";
     form.reset();
   })
   .catch(err => {
-    alert("Erro ao enviar formulário");
     console.error(err);
+    alert("Erro ao enviar formulário");
   });
 });
 </script>
 
 </body>
 </html>
+
