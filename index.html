@@ -24,22 +24,27 @@ body {
 
 /* Card do formulário */
 form {
-  background: #0b1d33; /* azul marinho */
-  padding: 7px 7px 7px; /* topo menor */
-  border-radius: 7px;
+  background: #0b1d33;
+  padding: 14px 24px 22px; /* topo bem menor */
+  border-radius: 18px;
   max-width: 420px;
   width: 100%;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.25);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+}
 .logo-container {
-  text-align: center;
-  margin-bottom: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 4px;     /* reduz espaço superior */
+  margin-bottom: 10px;
 }
+
 .logo-container img {
-  display: block;
-  max-width: 190px; /* logo maior */
+  width: 200px;        /* logo maior */
+  max-width: 70%;      /* segura no mobile */
   height: auto;
-  margin: 6px auto; /* espaçamento proporcional */
 }
+
 /* Títulos */
 h2 {
   text-align: center;
