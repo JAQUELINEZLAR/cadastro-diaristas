@@ -132,14 +132,40 @@ button:hover {
   <input id="telefone" placeholder="Telefone / WhatsApp">
   <input id="email" placeholder="E-mail">
   
-<input id="cep" placeholder="CEP" required>
-<input id="rua" readonly>
-<input id="bairro" readonly>
-<input id="cidade" readonly>
-<input id="estado" readonly>
-<input id="numero" placeholder="Número da casa" required>
+<script>
+const cep = document.getElementById("cep");
+const rua = document.getElementById("rua");
+const bairro = document.getElementById("bairro");
+const cidade = document.getElementById("cidade");
+const estado = document.getElementById("estado");
 
+cep.addEventListener("blur", () => {
+  const valor = cep.value.replace(/\D/g, "");
 
+  if (valor.length !== 8) {
+    alert("CEP inválido");
+    return;
+  }
+
+  fetch(`https://viacep.com.br/ws/${valor}/json/`)
+    .then(response => response.json())
+    .then(data => {
+      if (data.erro) {
+        alert("CEP não encontrado");
+        return;
+      }
+
+      rua.value = data.logradouro;
+      bairro.value = data.bairro;
+      cidade.value = data.localidade;
+      estado.value = data.uf;
+    })
+    .catch(() => {
+      alert("Erro ao buscar o CEP");
+    });
+});
+
+  
   <button type="submit">Enviar cadastro</button>
 
   <div class="success" id="successMsg">
