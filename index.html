@@ -201,9 +201,31 @@ form.addEventListener("submit", e => {
     return;
   }
 
+  const dados = {
+    nome: document.getElementById("nome").value,
+    cpf: document.getElementById("cpf").value,
+    telefone: document.getElementById("telefone").value,
+    email: document.getElementById("email").value,
+    cep: document.getElementById("cep").value,
+    rua: document.getElementById("rua").value,
+    bairro: document.getElementById("bairro").value,
+    cidade: document.getElementById("cidade").value,
+    estado: document.getElementById("estado").value
+  };
+
+  fetch("https://script.google.com/macros/s/AKfycbwCRzyOI9f4yRj0aITny8dIcfkc7yW2mHFFgTZEnnHuXskrpQh7Vr71RzkOUQt8k2WK0w/exec", {
+    method: "POST",
+    mode: "no-cors",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(dados)
+  });
+
   successMsg.style.display = "block";
   form.reset();
 });
+
 </script>
 
 </body>
