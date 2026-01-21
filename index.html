@@ -132,11 +132,12 @@ button:hover {
   <input id="telefone" placeholder="Telefone / WhatsApp">
   <input id="email" placeholder="E-mail">
 
-  <input id="cep" placeholder="CEP" required>
-  <input id="rua" placeholder="Rua" readonly>
-  <input id="bairro" placeholder="Bairro" readonly>
-  <input id="cidade" placeholder="Cidade" readonly>
-  <input id="estado" placeholder="Estado" readonly>
+<input id="cep" placeholder="CEP" required>
+<input id="rua" placeholder="Rua" readonly>
+<input id="numero" placeholder="Nº" required>
+<input id="bairro" placeholder="Bairro" readonly>
+<input id="cidade" placeholder="Cidade" readonly>
+<input id="estado" placeholder="Estado" readonly>
 
   <button type="submit">Enviar cadastro</button>
 
@@ -153,6 +154,7 @@ button:hover {
 <script>
 const cep = document.getElementById("cep");
 const rua = document.getElementById("rua");
+const numero = document.getElementById("numero");  
 const bairro = document.getElementById("bairro");
 const cidade = document.getElementById("cidade");
 const estado = document.getElementById("estado");
@@ -207,6 +209,7 @@ form.addEventListener("submit", e => {
     email: document.getElementById("email").value,
     cep: document.getElementById("cep").value,
     rua: document.getElementById("rua").value,
+    numero: document.getElementById("numero").value,
     bairro: document.getElementById("bairro").value,
     cidade: document.getElementById("cidade").value,
     estado: document.getElementById("estado").value
