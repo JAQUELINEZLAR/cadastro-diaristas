@@ -19,7 +19,7 @@ body {
   align-items: center;
   font-family: Arial, sans-serif;
   background: #ffffff; /* página branca */
-  padding: 15px;
+  padding: 20px;
 }
 
 /* Card do formulário */
@@ -134,7 +134,6 @@ button:hover {
 
   <input id="cep" placeholder="CEP" required>
   <input id="rua" placeholder="Rua" readonly>
-  <input id="numero" placeholder="Nº" required>
   <input id="bairro" placeholder="Bairro" readonly>
   <input id="cidade" placeholder="Cidade" readonly>
   <input id="estado" placeholder="Estado" readonly>
@@ -154,7 +153,6 @@ button:hover {
 <script>
 const cep = document.getElementById("cep");
 const rua = document.getElementById("rua");
-const nº = document.getElementById("nº");
 const bairro = document.getElementById("bairro");
 const cidade = document.getElementById("cidade");
 const estado = document.getElementById("estado");
@@ -209,13 +207,12 @@ form.addEventListener("submit", e => {
     email: document.getElementById("email").value,
     cep: document.getElementById("cep").value,
     rua: document.getElementById("rua").value,
-    nº: document.getElementById("nº").value,
     bairro: document.getElementById("bairro").value,
     cidade: document.getElementById("cidade").value,
     estado: document.getElementById("estado").value
   };
 
-  fetch("https://script.google.com/macros/s/AKfycbzjfvweSV8zgAzW3UmXkE-GkNZcyPuNXrweoRtq6XsmQ1GmhupOwWDxRR7EoKQ440QuWA/exec", {
+  fetch("https://script.google.com/macros/s/AKfycbzgCsWzfnHFy_qGljxqaDEwISmpcc3CjmFVY4_URwFjYiW8KbsJJW_XWyX21keAzDqeXQ/exec", {
     method: "POST",
     mode: "no-cors",
     headers: {
